@@ -1,4 +1,17 @@
+import time
 from llama_cpp import Llama
+
+
+def stream_generate_response(messages):
+    output = llm.create_chat_completion(
+        messages=messages, max_tokens=512, stop=["<|end|>"], stream=True
+    )
+
+    for chunk in output:
+        delta = chunk["choices"][0]["delta"]
+        yield delta + " "
+        time.sleep(0.02)
+
 
 llm = Llama(
     model_path="./models/Phi-3-mini-4k-instruct-q4.gguf",  # path to GGUF file
